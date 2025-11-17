@@ -65,7 +65,111 @@ Your toolbar popup gives you:
 
 ---
 
-# 🧠 Architecture Overview
+# 🔋 Performance, Caching & Reliability
 
-WordUp uses a clean, event-driven MV3 setup ensuring speed, reliability, and zero UI clutter.
+### ⚡ Two-Layer Caching
+- **In-memory LRU** (fast session lookups)  
+- **Persistent cache** in `chrome.storage.local` with 7-day TTL  
+
+### 🕒 Rate Limiting  
+- Queue-based enforcement — example: **5 requests / sec**  
+Prevents API abuse and random failures.
+
+### 🛡️ Error Handling
+- Clean structured error objects  
+- Strong input validation  
+- Safe fallback flows for edge cases (e.g., blocked content scripts)  
+
+---
+
+# 🔐 Security & Privacy
+
+- **No API keys are hardcoded.**  
+- **Your key stays local** (`chrome.storage.local`), not synced or uploaded.  
+- Text is only sent to external APIs (dictionary or Gemini) **when you ask** — no background scraping, no telemetry.  
+- DOM injection is minimal, isolated, and sanitized.
+
+---
+
+# 📥 Installation (Developer Mode)
+
+1. Clone or download the project.  
+2. Go to `chrome://extensions/`.  
+3. Enable **Developer mode**.  
+4. Click **Load unpacked** → select the `build/` folder.  
+5. Extension loads instantly.
+
+---
+
+# 🧰 Developer Guide
+
+### 📡 Background Service Worker
+Handles:
+- lookup and rewrite requests  
+- API calls  
+- caching  
+- rate limiting  
+- runtime config updates  
+- message routing
+
+### 🎣 Content Script (content.js)
+- Detects selection changes  
+- Determines “word vs sentence”  
+- Manages state (`IDLE`, `SHOWING_OPTIONS`, `AWAITING_REWRITE`, etc.)  
+- Dispatches/receives events from UI card  
+
+### 🪟 Floating UI (selection-ui.js)
+- Injects the **#wordup-selection-card**  
+- Intelligent card positioning  
+- Rendering views: loading, definition, rewrite options, errors  
+- Dark/light theme sync  
+- Emits actions (Copy, Insert, Rewrite)
+
+---
+
+# 🧪 Testing Checklist
+
+- Word lookup on typical pages  
+- Rewrite flows in editable vs non-editable environments  
+- PDF viewer fallback via context menu  
+- Dark/light mode consistency  
+- Cache hit/miss behavior  
+- Expired TTL cleanup  
+- Invalid or missing API key handling  
+- Service worker reactivation (common MV3 gotcha)  
+
+---
+
+# 🩺 Troubleshooting
+
+### Card doesn’t appear
+- Another extension might block DOM injection  
+- Content script may be restricted on the current page  
+- Check `chrome://extensions` → Inspect views  
+
+### Rewrite not working
+- Likely invalid Gemini API key  
+- Check Options → Diagnostics  
+
+### Insert button missing
+- Your selection isn’t inside a supported editable field  
+
+---
+# 🚧 Roadmap
+
+**Upcoming Improvements**
+- Custom rewrite styles & user-defined tones  
+- Offline word database for instant fallback  
+- Optional server-proxy for enterprise environments  
+- Analytics opt-in for stable error reporting  
+- Enhanced UI animations & customization  
+
+---
+
+# 📝 License
+MIT License — feel free to extend, remix, and improve.
+
+---
+
+
 
