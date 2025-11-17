@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WordUp Options</title>
+    <link rel="stylesheet" href="options.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>WordUp Settings</h1>
+                <p>Configure your extension preferences and manage data.</p>
+            </div>
+            <button id="theme-toggle" class="icon-button" title="Toggle Theme"></button>
+        </div>
+
+        <main class="main-content">
+            <form id="settings-form">
+                <section class="settings-section">
+                    <div class="section-title">
+                        <h2>API Configuration</h2>
+                    </div>
+                    <div class="section-controls">
+                        <div class="form-group">
+                            <label for="dictionary-url">Dictionary API URL</label>
+                            <input type="url" id="dictionary-url" placeholder="https://api.dictionaryapi.dev/api/v2/entries/en/">
+                        </div>
+                        <div class="form-group">
+                            <label for="gemini-key">Gemini API Key</label>
+                            <input type="password" id="gemini-key" placeholder="Enter your Gemini API key">
+                            <small>Your key is stored securely on this device and never synced.</small>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="settings-section">
+                    <div class="section-title">
+                        <h2>Data Management</h2>
+                    </div>
+                    <div class="section-controls">
+                        <div class="button-group">
+                            <button type="button" id="export-data" class="btn">Export Word List</button>
+                            <label class="btn btn-secondary">
+                                Import Word List <input type="file" id="import-data" hidden accept=".json">
+                            </label>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </main>
+
+        <footer class="footer">
+            <div id="status-message"></div>
+            <div class="footer-actions">
+                <button type="button" id="run-diagnostics" class="btn btn-secondary">Run Diagnostics</button>
+                <button type="submit" form="settings-form" id="save-btn">Save Settings</button>
+            </div>
+        </footer>
+    </div>
+    <script src="options.js"></script>
+</body>
+</html>
